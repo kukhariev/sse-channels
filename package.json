@@ -1,0 +1,56 @@
+{
+  "name": "@dropb/sse-channels",
+  "version": "0.4.1",
+  "description": "Node server-sent events middleware",
+  "keywords": [
+    "sse",
+    "server-sent-events",
+    "eventsource",
+    "channels",
+    "typescript"
+  ],
+  "author": {
+    "name": "kukhariev",
+    "email": "q_h@inbox.ru"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kukhariev/sse-channels.git"
+  },
+  "license": "MIT",
+  "engines": {
+    "npm": ">= 6.0.0"
+  },
+  "files": [
+    "lib"
+  ],
+  "main": "lib/index.js",
+  "typings": "lib/index.d.ts",
+  "scripts": {
+    "clean": "rimraf lib",
+    "demo": "node example/",
+    "build": "npm run tslint && npm run clean && npm run build-ts",
+    "test": "./node_modules/.bin/mocha",
+    "test:watch": "./node_modules/.bin/mocha --watch",
+    "build-ts": "tsc",
+    "tslint": "tslint -c tslint.json -p tsconfig.json",
+    "preversion": "npm run build",
+    "postversion": "git push --follow-tags && npm publish"
+  },
+  "devDependencies": {
+    "@types/chai": "^4.1.4",
+    "@types/chai-http": "^3.0.4",
+    "@types/eventsource": "^1.0.2",
+    "@types/mocha": "^5.2.2",
+    "@types/node": "^10.5.0",
+    "chai": "^4.1.2",
+    "chai-http": "^4.0.0",
+    "eventsource": "^1.0.5",
+    "express": "^4.16.3",
+    "mocha": "^5.2.0",
+    "rimraf": "^2.6.2",
+    "ts-node": "^6.1.1",
+    "tslint": "^5.10.0",
+    "typescript": "^2.9.2"
+  }
+}
