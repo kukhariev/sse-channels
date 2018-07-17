@@ -98,3 +98,5 @@ clients list filtered by `channel`
 
 [npm-image]: https://img.shields.io/npm/v/@dropb/sse-channels.svg
 [npm-url]: https://www.npmjs.com/package/@dropb/sse-channels
+[travis-image]: https://travis-ci.org/kukhariev/sse-channels.svg?branch=master
+[travis-url]: https://travis-ci.org/kukhariev/sse-channels
