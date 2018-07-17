@@ -2,9 +2,8 @@
 
 > Node Server-Sent Events middleware
 
-[![npm version][npm-image]][npm-url]
-
 [![Build status][travis-image]][travis-url]
+[![npm version][npm-image]][npm-url]
 
 ## Install
 
@@ -81,8 +80,9 @@ publish(channels: string | string[] | RegExp, event: string, data: any): void;
 
 ### send(eventName, data, [clients])
 
-send events to clients. -`eventName`(string): event name. Defaults: "message"
+send events to clients.
 
+- `eventName`(string): event name. Defaults: "message"
 - `data`: event data
 - `clients`(array) clients list
 
