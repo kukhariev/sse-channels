@@ -2,7 +2,7 @@
 
 > Node Server-Sent Events middleware
 
-<!-- [![npm version][npm-image]][npm-url] -->
+[![npm version][npm-image]][npm-url]
 
 [![Build status][travis-image]][travis-url]
 
@@ -15,7 +15,7 @@ npm install --save @dropb/sse-channels
 ## Usage
 
 ```js
-const { SseChannels } = require('sse-channels');
+const { SseChannels } = require('@dropb/sse-channels');
 const express = require('express');
 const { join } = require('path');
 
