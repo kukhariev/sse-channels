@@ -1,7 +1,7 @@
 {
   "name": "@dropb/sse-channels",
   "version": "0.4.1",
-  "description": "Node server-sent events middleware",
+  "description": "Server-sent events middleware",
   "keywords": [
     "sse",
     "server-sent-events",
@@ -39,14 +39,11 @@
   },
   "devDependencies": {
     "@types/chai": "^4.1.4",
-    "@types/chai-http": "^3.0.4",
     "@types/eventsource": "^1.0.2",
     "@types/mocha": "^5.2.2",
     "@types/node": "^10.5.0",
     "chai": "^4.1.2",
-    "chai-http": "^4.0.0",
     "eventsource": "^1.0.5",
-    "express": "^4.16.3",
     "mocha": "^5.2.0",
     "rimraf": "^2.6.2",
     "ts-node": "^6.1.1",
