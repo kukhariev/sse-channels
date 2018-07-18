@@ -1,6 +1,6 @@
 # sse-channels
 
-> Node Server-Sent Events middleware
+> Server-Sent Events middleware
 
 [![Build status][travis-image]][travis-url]
 [![npm version][npm-image]][npm-url]
@@ -53,8 +53,8 @@ app.listen(3005);
 
 Available options are:
 
-- `retryInterval` (integer): set clients reconencting time
-- `pingInterval` (integer):
+- `retryInterval` (integer): set clients reconnencting time. Default: `1000`
+- `pingInterval` (integer): ping interval to keep connection alive. Default: `10000`
 
 ### subscribe(req, res, [channel])
 
@@ -82,7 +82,7 @@ publish(channels: string | string[] | RegExp, event: string, data: any): void;
 
 send events to clients.
 
-- `eventName`(string): event name. Defaults: "message"
+- `eventName`(string): event name. Default: `message`
 - `data`: event data
 - `clients`(array) clients list
 
