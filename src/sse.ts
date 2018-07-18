@@ -143,15 +143,14 @@ class SseChannels extends EventEmitter {
 
   publish(channels, event?, data?) {
     if (!event && !data) {
-      data = event;
       event = channels;
       channels = event.channel || /.*/;
     }
     if (typeof event === 'string' && data) {
       data = data;
     } else if (event.event || event.type) {
-      event = event.event || event.type;
       data = event.data;
+      event = event.event || event.type;
     } else {
       data = event;
       event = 'message';
