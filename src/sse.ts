@@ -1,8 +1,9 @@
 import { EventEmitter } from 'events';
-import { ServerRequest, ServerResponse } from 'http';
+
+import { ClientRequest, ServerResponse } from 'http';
 
 export type SseClient = {
-  req: ServerRequest;
+  req: ClientRequest;
   res: ServerResponse;
   channel: string;
 };
@@ -53,11 +54,7 @@ class SseChannels extends EventEmitter {
     }
   }
 
-  subscribe(
-    req: ServerRequest,
-    res: ServerResponse,
-    channel: string = '*'
-  ): Promise<SseClient> {
+  subscribe(req: ClientRequest, res: ServerResponse, channel: string = '*'): Promise<SseClient> {
     return new Promise(resolve => {
       const client: SseClient = {
         req,
@@ -130,9 +127,7 @@ class SseChannels extends EventEmitter {
     if (!Array.isArray(search)) {
       search = [search];
     }
-    return this.connections.filter(({ channel }) =>
-      search.some(c => channel === c)
-    );
+    return this.connections.filter(({ channel }) => search.some(c => channel === c));
   }
 
   publish(eventObject: SseEvent): void;
