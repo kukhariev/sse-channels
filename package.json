@@ -19,7 +19,7 @@
   },
   "license": "MIT",
   "engines": {
-    "npm": ">= 6.0.0"
+    "npm": ">= 8.0.0"
   },
   "files": [
     "lib"
@@ -38,16 +38,16 @@
     "postversion": "git push --follow-tags && npm publish"
   },
   "devDependencies": {
-    "@types/chai": "^4.1.4",
+    "@types/chai": "^4.1.7",
     "@types/eventsource": "^1.0.2",
-    "@types/mocha": "^5.2.2",
-    "@types/node": "^10.5.0",
-    "chai": "^4.1.2",
-    "eventsource": "^1.0.5",
+    "@types/mocha": "^5.2.5",
+    "@types/node": "^10.12.11",
+    "chai": "^4.2.0",
+    "eventsource": "^1.0.7",
     "mocha": "^5.2.0",
     "rimraf": "^2.6.2",
-    "ts-node": "^6.1.1",
-    "tslint": "^5.10.0",
-    "typescript": "^2.9.2"
+    "ts-node": "^7.0.1",
+    "tslint": "^5.11.0",
+    "typescript": "^3.2.1"
   }
 }
