@@ -1,9 +1,9 @@
 import { EventEmitter } from 'events';
 
-import { ClientRequest, ServerResponse } from 'http';
+import { IncomingMessage, ServerResponse } from 'http';
 
 export type SseClient = {
-  req: ClientRequest;
+  req: IncomingMessage;
   res: ServerResponse;
   channel: string;
 };
@@ -54,7 +54,7 @@ class SseChannels extends EventEmitter {
     }
   }
 
-  subscribe(req: ClientRequest, res: ServerResponse, channel: string = '*'): Promise<SseClient> {
+  subscribe(req: IncomingMessage, res: ServerResponse, channel: string = '*'): Promise<SseClient> {
     return new Promise(resolve => {
       const client: SseClient = {
         req,
