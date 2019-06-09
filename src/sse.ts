@@ -18,7 +18,7 @@ export type SseEvent = {
 
 class SseChannels extends EventEmitter {
   public get channels(): string[] {
-    const _channels = new Set();
+    const _channels: Set<string> = new Set();
     this.connections.forEach(({ channel }) => {
       _channels.add(channel);
     });
@@ -26,7 +26,7 @@ class SseChannels extends EventEmitter {
   }
   private lastId = 1;
   public connections: SseClient[] = [];
-  private pingTimer;
+  private pingTimer: NodeJS.Timeout;
   public retryInterval: number;
   public pingInterval: number;
   protected headers = {
