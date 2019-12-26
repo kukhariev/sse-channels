@@ -38,16 +38,16 @@
     "postversion": "git push --follow-tags && npm publish"
   },
   "devDependencies": {
-    "@types/chai": "^4.1.7",
-    "@types/eventsource": "^1.0.2",
-    "@types/mocha": "^5.2.7",
-    "@types/node": "^10.12.11",
-    "chai": "^4.2.0",
-    "eventsource": "^1.0.7",
-    "mocha": "^5.2.0",
-    "rimraf": "^2.6.3",
-    "ts-node": "^8.2.0",
-    "tslint": "^5.17.0",
-    "typescript": "^3.5.1"
+    "@types/chai": "4.2.7",
+    "@types/eventsource": "1.1.2",
+    "@types/mocha": "5.2.7",
+    "@types/node": "10.17.13",
+    "chai": "4.2.0",
+    "eventsource": "1.0.7",
+    "mocha": "5.2.0",
+    "rimraf": "2.7.1",
+    "ts-node": "8.5.4",
+    "tslint": "5.20.1",
+    "typescript": "3.7.4"
   }
 }
