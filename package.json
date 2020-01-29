@@ -38,7 +38,7 @@
     "postversion": "git push --follow-tags && npm publish"
   },
   "devDependencies": {
-    "@types/chai": "4.2.7",
+    "@types/chai": "4.2.8",
     "@types/eventsource": "1.1.2",
     "@types/mocha": "5.2.7",
     "@types/node": "10.17.14",
