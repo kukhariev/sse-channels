@@ -44,7 +44,7 @@
     "@types/node": "10.17.16",
     "chai": "4.2.0",
     "eventsource": "1.0.7",
-    "mocha": "7.0.1",
+    "mocha": "7.1.0",
     "rimraf": "3.0.2",
     "ts-node": "8.6.2",
     "tslint": "5.20.1",
