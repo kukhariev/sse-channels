@@ -38,11 +38,11 @@
     "postversion": "git push --follow-tags && npm publish"
   },
   "devDependencies": {
-    "@types/chai": "4.2.14",
+    "@types/chai": "4.2.18",
     "@types/eventsource": "1.1.5",
     "@types/mocha": "7.0.2",
     "@types/node": "10.17.47",
-    "chai": "4.2.0",
+    "chai": "4.3.4",
     "eventsource": "1.0.7",
     "mocha": "7.2.0",
     "rimraf": "3.0.2",
