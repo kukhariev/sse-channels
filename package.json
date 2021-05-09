@@ -40,11 +40,11 @@
   "devDependencies": {
     "@types/chai": "4.2.14",
     "@types/eventsource": "1.1.5",
-    "@types/mocha": "7.0.2",
+    "@types/mocha": "8.2.2",
     "@types/node": "10.17.47",
     "chai": "4.2.0",
     "eventsource": "1.0.7",
-    "mocha": "7.2.0",
+    "mocha": "8.4.0",
     "rimraf": "3.0.2",
     "ts-node": "9.0.0",
     "tslint": "6.1.3",
