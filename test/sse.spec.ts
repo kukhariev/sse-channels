@@ -6,7 +6,7 @@ import * as url from 'url';
 import { SseChannels } from '../src/';
 
 const PORT = 5005;
-const delay = time => {
+const delay = (time: number) => {
   return new Promise(resolve => {
     setTimeout(resolve, time);
   });
