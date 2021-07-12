@@ -9,20 +9,23 @@ export type SseClient = {
 };
 
 export type SseEvent = {
-  data: any;
+  data: unknown;
   id?: number;
   event?: string;
   type?: string;
   channel?: string | string[] | RegExp;
 };
 
+function isRegExp(params: unknown): params is RegExp {
+  return params instanceof RegExp;
+}
 class SseChannels extends EventEmitter {
   public get channels(): string[] {
-    const _channels: Set<string> = new Set();
+    const channelsSet: Set<string> = new Set();
     this.connections.forEach(({ channel }) => {
-      _channels.add(channel);
+      channelsSet.add(channel);
     });
-    return Array.from(_channels);
+    return Array.from(channelsSet);
   }
   private lastId = 1;
   public connections: SseClient[] = [];
@@ -35,12 +38,7 @@ class SseChannels extends EventEmitter {
     Connection: 'keep-alive'
   };
 
-  constructor(
-    options: {
-      retryInterval?: number;
-      pingInterval?: number;
-    } = {}
-  ) {
+  constructor(options: { retryInterval?: number; pingInterval?: number } = {}) {
     super();
     this.retryInterval = options.retryInterval || 1000;
     this.pingInterval = options.pingInterval || 10000;
@@ -54,13 +52,9 @@ class SseChannels extends EventEmitter {
     }
   }
 
-  subscribe(req: IncomingMessage, res: ServerResponse, channel: string = '*'): Promise<SseClient> {
+  subscribe(req: IncomingMessage, res: ServerResponse, channel = '*'): Promise<SseClient> {
     return new Promise(resolve => {
-      const client: SseClient = {
-        req,
-        res,
-        channel
-      };
+      const client: SseClient = { req, res, channel };
       res.on('close', () => {
         this.emit('disconnected', client);
         this.removeClient(client);
@@ -76,7 +70,7 @@ class SseChannels extends EventEmitter {
     });
   }
 
-  protected handshake() {
+  protected handshake(): void {
     if (!this.pingTimer && typeof this.pingInterval === 'number') {
       this.pingTimer = setInterval(() => {
         this.connections.forEach(client => {
@@ -86,7 +80,7 @@ class SseChannels extends EventEmitter {
     }
   }
 
-  unsubscribe(client: SseClient) {
+  unsubscribe(client: SseClient): Promise<void> {
     return new Promise(resolve => {
       client.res.statusCode = 410;
       client.res.end(() => {
@@ -97,15 +91,19 @@ class SseChannels extends EventEmitter {
     });
   }
 
-  send(eventName: string, data: any, clients: SseClient[] = this.connections) {
-    let body: string = typeof data === 'object' ? JSON.stringify(data) : data;
+  send(
+    eventName: string,
+    data: string | number | Record<string, any>,
+    clients: SseClient[] = this.connections
+  ): void {
+    let body: string = typeof data === 'object' ? JSON.stringify(data) : String(data);
     body =
       `id: ${this.lastId++}\n` +
       body
         .split(/[\r\n]+/)
         .map(str => `data: ${str}`)
-        .join(`\n`) +
-      `\n\n`;
+        .join('\n') +
+      '\n\n';
 
     if (eventName !== 'message') {
       body = `event: ${eventName}\n`.concat(body);
@@ -116,18 +114,16 @@ class SseChannels extends EventEmitter {
     });
   }
 
-  findClients(search?: string | string[] | RegExp): SseClient[];
-  findClients(search?: any): SseClient[] {
+  findClients(search?: string | string[] | RegExp): SseClient[] {
     if (!search) {
       return this.connections;
+    } else if (isRegExp(search)) {
+      const reg = search;
+      return this.connections.filter(({ channel }) => reg.test(channel));
+    } else if (Array.isArray(search)) {
+      return this.connections.filter(({ channel }) => search.some(c => channel === c));
     }
-    if (search instanceof RegExp) {
-      return this.connections.filter(({ channel }) => search.test(channel));
-    }
-    if (!Array.isArray(search)) {
-      search = [search];
-    }
-    return this.connections.filter(({ channel }) => search.some(c => channel === c));
+    return this.connections.filter(({ channel }) => search === channel);
   }
 
   publish(eventObject: SseEvent): void;

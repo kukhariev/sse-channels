@@ -22,11 +22,7 @@ describe('SseChannels', () => {
   before('start server', () => {
     server = createServer(async (req, res) => {
       const urlParsed = url.parse(req.url, true);
-      const { channel } = await sse.subscribe(
-        req,
-        res,
-        `room=${+urlParsed.query.room}`
-      );
+      const { channel } = await sse.subscribe(req, res, `room=${+urlParsed.query.room}`);
     });
     server.listen(PORT);
   });
@@ -73,15 +69,15 @@ describe('SseChannels', () => {
     expect(r1).to.have.any.keys('type', 'data');
   });
 
-  it('send message to specific clients', async () => {
+  it('send message to specific clients', () => {
     return new Promise((resolve, reject) => {
       sse.send(
         'message',
         { test: 'test' },
         sse.connections.filter(cl => cl.req.url === '/stream?room=1')
       );
-      clients['room=1'].onmessage = resolve;
-      clients['room=2'].onmessage = reject;
+      clients['room=1'].onmessage = msg => resolve(msg);
+      clients['room=2'].onmessage = msg => reject(msg);
     });
   });
 
@@ -92,6 +88,7 @@ describe('SseChannels', () => {
       clients['room=2'].onmessage = msg => resolve(msg);
     });
   });
+
   it('publish event to channel (regex)', () => {
     const p0 = (clients['room=1'].onmessage = msg => Promise.resolve(msg));
     const p1 = (clients['room=2'].onmessage = msg => Promise.resolve(msg));
