@@ -10,16 +10,13 @@ module.exports = {
     sourceType: 'module',
     ecmaVersion: 2018,
   },
-  plugins: ['@typescript-eslint', 'prettier'],
   extends: [
     'eslint:recommended',
-    'plugin:prettier/recommended',
     'plugin:@typescript-eslint/recommended',
     'plugin:@typescript-eslint/eslint-recommended',
     'plugin:@typescript-eslint/recommended-requiring-type-checking',
   ],
   rules: {
-    'prettier/prettier': 'warn',
     '@typescript-eslint/member-delimiter-style': [
       'error',
       {
