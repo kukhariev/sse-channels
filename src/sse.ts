@@ -54,15 +54,18 @@ class SseChannels extends EventEmitter {
   }
 
   private removeClient(client: SseClient): void {
-    this.connections.splice(this.connections.indexOf(client), 1);
-    if (this.connections.length === 0) {
+    const index = this.connections.indexOf(client);
+    if (index >= 0) {
+      this.connections.splice(index, 1);
+    }
+    if (this.connections.length === 0 && this.pingTimer) {
       clearInterval(this.pingTimer);
       this.pingTimer = undefined;
     }
   }
 
   subscribe(req: IncomingMessage, res: ServerResponse, channel = '*'): Promise<SseClient> {
-    return new Promise(resolve => {
+    return new Promise((resolve) => {
       const client: SseClient = { req, res, channel };
       res.on('close', () => {
         this.emit('disconnected', client);
@@ -82,7 +85,7 @@ class SseChannels extends EventEmitter {
   protected handshake(): void {
     if (!this.pingTimer && typeof this.pingInterval === 'number') {
       this.pingTimer = setInterval(() => {
-        this.connections.forEach(client => {
+        this.connections.forEach((client) => {
           client.res.write(':\n');
         });
       }, this.pingInterval);
@@ -90,27 +93,21 @@ class SseChannels extends EventEmitter {
   }
 
   unsubscribe(client: SseClient): Promise<void> {
-    return new Promise(resolve => {
+    return new Promise((resolve) => {
       client.res.statusCode = 410;
       client.res.end(() => {
-        this.emit('disconnected', client);
-        this.removeClient(client);
         resolve();
       });
     });
   }
 
-  send(
-    eventName: string,
-    data: Data,
-    clients: SseClient[] = this.connections
-  ): void {
+  send(eventName: string, data: Data, clients: SseClient[] = this.connections): void {
     let body: string = typeof data === 'object' ? JSON.stringify(data) : String(data);
     body =
       `id: ${this.lastId++}\n` +
       body
         .split(/[\r\n]+/)
-        .map(str => `data: ${str}`)
+        .map((str) => `data: ${str}`)
         .join('\n') +
       '\n\n';
 
@@ -118,7 +115,7 @@ class SseChannels extends EventEmitter {
       body = `event: ${eventName}\n`.concat(body);
     }
     this.emit('send', clients, body);
-    clients.forEach(client => {
+    clients.forEach((client) => {
       client.res.write(body);
     });
   }
@@ -130,7 +127,7 @@ class SseChannels extends EventEmitter {
       const reg = search;
       return this.connections.filter(({ channel }) => reg.test(channel));
     } else if (Array.isArray(search)) {
-      return this.connections.filter(({ channel }) => search.some(c => channel === c));
+      return this.connections.filter(({ channel }) => search.some((c) => channel === c));
     }
     return this.connections.filter(({ channel }) => search === channel);
   }
