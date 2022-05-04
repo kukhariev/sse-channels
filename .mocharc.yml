@@ -3,4 +3,5 @@ watch-files:
   - 'src/**/*.ts'
   - 'test/**/*.ts'
 bail: true
-spec: 'test/**/*.ts' 
+spec: 'test/**/*.ts'
+timeout: 10000
