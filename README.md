@@ -2,7 +2,7 @@
 
 > Server-Sent Events middleware
 
-[![Build status][travis-image]][travis-url]
+[![CI][ga-image]][ga-url]
 [![npm version][npm-image]][npm-url]
 
 ## Install
@@ -23,10 +23,10 @@ app.get('/', (req, res) => {
   res.sendFile(join(`${__dirname}/index.html`));
 });
 const sse = new SseChannels();
-sse.on('connected', client => {
+sse.on('connected', (client) => {
   sse.send('message', `+++ ${client.req.query.ch} connected`);
 });
-sse.on('disconnected', client => {
+sse.on('disconnected', (client) => {
   sse.send('message', `--- ${client.req.query.ch} disconnected`);
 });
 app.use('/stream', (req, res) => {
@@ -34,13 +34,8 @@ app.use('/stream', (req, res) => {
 });
 
 setInterval(() => {
-  sse.channels.forEach(ch => {
-    sse.publish(
-      ch,
-      `data: ${Math.random().toFixed(4)} channels: ${
-        sse.channels.length
-      } clients: ${sse.connections.length}`
-    );
+  sse.channels.forEach((ch) => {
+    sse.publish(ch, `data: ${Math.random().toFixed(4)} channels: ${sse.channels.length} clients: ${sse.connections.length}`);
   });
 }, 3000);
 
@@ -49,7 +44,7 @@ app.listen(3005);
 
 ## API
 
-### SseChannels([options]);
+### SseChannels([options])
 
 Available options are:
 
@@ -62,7 +57,7 @@ attach to HTTP request
 
 - `channel` (string): assign `channel`
 
-### unsubscribe(client);
+### unsubscribe(client)
 
 drop client
 
@@ -98,5 +93,5 @@ clients list filtered by `channel`
 
 [npm-image]: https://img.shields.io/npm/v/@dropb/sse-channels.svg
 [npm-url]: https://www.npmjs.com/package/@dropb/sse-channels
-[travis-image]: https://travis-ci.org/kukhariev/sse-channels.svg?branch=master
-[travis-url]: https://travis-ci.org/kukhariev/sse-channels
+[ga-image]: https://github.com/kukhariev/sse-channels/actions/workflows/test.yml/badge.svg?branch=master
+[ga-url]: https://github.com/kukhariev/sse-channels/actions/workflows/test.yml
