@@ -1,6 +1,3 @@
-/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
-/* eslint-disable @typescript-eslint/no-explicit-any */
-
 import { EventEmitter } from 'events';
 
 import { IncomingMessage, ServerResponse } from 'http';
@@ -11,8 +8,10 @@ export type SseClient = {
   channel: string;
 };
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export type EventData = string | number | boolean | Record<string, any> | null;
 export type SseEvent = {
-  data: Data;
+  data: EventData;
   id?: number;
   event?: string;
   type?: string;
@@ -22,8 +21,6 @@ export type SseEvent = {
 function isSseEvent(value: unknown): value is SseEvent {
   return value && typeof value === 'object' && 'data' in value;
 }
-
-type Data = string | number | boolean | Record<string, any> | null;
 
 function isRegExp(params: unknown): params is RegExp {
   return params instanceof RegExp;
@@ -101,7 +98,7 @@ class SseChannels extends EventEmitter {
     });
   }
 
-  send(eventName: string, data: Data, clients: SseClient[] = this.connections): void {
+  send(eventName: string, data: EventData, clients: SseClient[] = this.connections): void {
     let body: string = typeof data === 'object' ? JSON.stringify(data) : String(data);
     body =
       `id: ${this.lastId++}\n` +
@@ -133,11 +130,12 @@ class SseChannels extends EventEmitter {
   }
 
   publish(eventObject: SseEvent): void; //
-  publish(data: any): void; //
+  publish(data: EventData): void; //
   publish(channels: string | string[] | RegExp, eventObject: SseEvent): void; //
-  publish(channels: string | string[] | RegExp, data: any): void;
-  publish(channels: string | string[] | RegExp, event: string, data: any): void; //
+  publish(channels: string | string[] | RegExp, data: EventData): void;
+  publish(channels: string | string[] | RegExp, event: string, data: EventData): void; //
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   publish(...args: any[]): void {
     const eventObject: SseEvent = {
       event: 'message',
@@ -148,7 +146,7 @@ class SseChannels extends EventEmitter {
       if (isSseEvent(args[0])) {
         Object.assign(eventObject, args[0]);
       } else {
-        eventObject.data = args[0] as Data;
+        eventObject.data = args[0] as EventData;
       }
     }
     if (args.length === 2) {
@@ -156,10 +154,10 @@ class SseChannels extends EventEmitter {
       if (isSseEvent(args[1])) {
         Object.assign(eventObject, args[1]);
       } else {
-        eventObject.data = args[1] as Data;
+        eventObject.data = args[1] as EventData;
       }
     } else if (args.length === 3) {
-      eventObject.data = args[2] as Data;
+      eventObject.data = args[2] as EventData;
       eventObject.channel = args[0] as string | string[] | RegExp;
       eventObject.event = args[1] as string;
     }
