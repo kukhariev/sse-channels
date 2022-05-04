@@ -6,4 +6,4 @@ temp/
 node_modules/
 coverage/
 .eslintrc.js
-*.config.js
+*.js
