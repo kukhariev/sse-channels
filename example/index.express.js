@@ -1,5 +1,3 @@
-'use strict';
-
 const { SseChannels } = require('../lib/');
 const express = require('express');
 const { join } = require('path');
