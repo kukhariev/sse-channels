@@ -122,6 +122,7 @@ describe('SseChannels', () => {
       expect(sse.connections.length).to.be.eq(1);
     }
   });
+
   it('close on clients disconnect', async () => {
     for (const client in clients) {
       clients[client].close();

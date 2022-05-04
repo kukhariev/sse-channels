@@ -11,7 +11,6 @@ module.exports = {
     ecmaVersion: 2018,
   },
   extends: [
-    'eslint:recommended',
     'plugin:@typescript-eslint/recommended',
     'plugin:@typescript-eslint/eslint-recommended',
     'plugin:@typescript-eslint/recommended-requiring-type-checking',
@@ -29,10 +28,6 @@ module.exports = {
           requireLast: false,
         },
       },
-    ],
-    '@typescript-eslint/naming-convention': [
-      'error',
-      { selector: 'variableLike', format: ['camelCase'] },
     ],
     '@typescript-eslint/prefer-namespace-keyword': 'error',
     '@typescript-eslint/quotes': [

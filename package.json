@@ -29,7 +29,7 @@
   "scripts": {
     "clean": "rimraf lib",
     "demo": "node example/",
-    "build": "npm run tslint && npm run clean && npm run build-ts",
+    "build": "npm run lint && npm run clean && npm run build-ts",
     "test": "mocha",
     "test:watch": "mocha --watch",
     "build-ts": "tsc",
@@ -43,6 +43,7 @@
     "@types/mocha": "7.0.2",
     "@types/node": "10.17.47",
     "@typescript-eslint/eslint-plugin": "^4.28.2",
+    "@typescript-eslint/parser": "^4.28.2",
     "chai": "4.2.0",
     "eslint": "^7.30.0",
     "eventsource": "1.0.7",

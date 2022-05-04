@@ -1,3 +1,6 @@
+/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import { EventEmitter } from 'events';
 
 import { IncomingMessage, ServerResponse } from 'http';
@@ -9,12 +12,18 @@ export type SseClient = {
 };
 
 export type SseEvent = {
-  data: unknown;
+  data: Data;
   id?: number;
   event?: string;
   type?: string;
   channel?: string | string[] | RegExp;
 };
+
+function isSseEvent(value: unknown): value is SseEvent {
+  return value && typeof value === 'object' && 'data' in value;
+}
+
+type Data = string | number | boolean | Record<string, any> | null;
 
 function isRegExp(params: unknown): params is RegExp {
   return params instanceof RegExp;
@@ -93,7 +102,7 @@ class SseChannels extends EventEmitter {
 
   send(
     eventName: string,
-    data: string | number | Record<string, any>,
+    data: Data,
     clients: SseClient[] = this.connections
   ): void {
     let body: string = typeof data === 'object' ? JSON.stringify(data) : String(data);
@@ -126,27 +135,39 @@ class SseChannels extends EventEmitter {
     return this.connections.filter(({ channel }) => search === channel);
   }
 
-  publish(eventObject: SseEvent): void;
-  publish(data: any): void;
-  publish(channels: string | string[] | RegExp, eventObject: SseEvent): void;
+  publish(eventObject: SseEvent): void; //
+  publish(data: any): void; //
+  publish(channels: string | string[] | RegExp, eventObject: SseEvent): void; //
   publish(channels: string | string[] | RegExp, data: any): void;
-  publish(channels: string | string[] | RegExp, event: string, data: any): void;
+  publish(channels: string | string[] | RegExp, event: string, data: any): void; //
 
-  publish(channels, event?, data?) {
-    if (!event && !data) {
-      event = channels;
-      channels = event.channel || /.*/;
+  publish(...args: any[]): void {
+    const eventObject: SseEvent = {
+      event: 'message',
+      data: {},
+      channel: /.*/
+    };
+    if (args.length === 1) {
+      if (isSseEvent(args[0])) {
+        Object.assign(eventObject, args[0]);
+      } else {
+        eventObject.data = args[0] as Data;
+      }
     }
-    if (typeof event === 'string' && data) {
-      data = data;
-    } else if (event.event || event.type) {
-      data = event.data;
-      event = event.event || event.type;
-    } else {
-      data = event;
-      event = 'message';
+    if (args.length === 2) {
+      eventObject.channel = args[0] as string | string[] | RegExp;
+      if (isSseEvent(args[1])) {
+        Object.assign(eventObject, args[1]);
+      } else {
+        eventObject.data = args[1] as Data;
+      }
+    } else if (args.length === 3) {
+      eventObject.data = args[2] as Data;
+      eventObject.channel = args[0] as string | string[] | RegExp;
+      eventObject.event = args[1] as string;
     }
-    this.send(event, data, this.findClients(channels));
+
+    this.send(eventObject.event, eventObject.data, this.findClients(eventObject.channel));
   }
 }
 
