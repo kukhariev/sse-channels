@@ -32,7 +32,7 @@
     "build": "npm run lint && npm run clean && npm run build-ts",
     "test": "mocha",
     "test:watch": "mocha --watch",
-    "build-ts": "tsc",
+    "build-ts": "tsc --project tsconfig.build.json",
     "lint": "eslint -c .eslintrc.js --ext .ts src",
     "preversion": "npm run build",
     "postversion": "git push --follow-tags && npm publish"

@@ -1,13 +1,9 @@
 {
-  "compileOnSave": true,
+  "compileOnSave": false,
   "compilerOptions": {
     "module": "commonjs",
-    "outDir": "./lib",
     "target": "es2018",
-    "moduleResolution": "node",
-    "declaration": true
-    // "noImplicitAny": true
+    "moduleResolution": "node"
   },
-  "include": ["./src/**/*"],
-  "exclude": ["./test/*.spec.ts"]
+  "exclude": ["node_modules", "lib", "examples"]
 }
