@@ -1,7 +1,7 @@
 import chai = require('chai');
 const expect = chai.expect;
 import * as EventSource from 'eventsource';
-import { createServer } from 'http';
+import { createServer, Server } from 'http';
 import * as url from 'url';
 import { SseChannels } from '../src/';
 
@@ -15,22 +15,27 @@ const delay = (time: number) => {
 const sse = new SseChannels({ retryInterval: 2000 });
 sse.on('error', err => console.error(err));
 
-let server;
+let server: Server;
 const clients: { [key: string]: EventSource } = {};
 
 describe('SseChannels', () => {
   before('start server', () => {
-    server = createServer(async (req, res) => {
+    server = createServer((req, res) => {
       const urlParsed = url.parse(req.url, true);
-      const { channel } = await sse.subscribe(req, res, `room=${+urlParsed.query.room}`);
+      sse.subscribe(req, res, `room=${+urlParsed.query.room}`).catch(err => {
+        console.error(err);
+        res.statusCode = 500;
+        res.end();
+      });
     });
+
     server.listen(PORT);
   });
 
   it('open connection', done => {
     const client = new EventSource(`http://localhost:${PORT}/stream?room=1`);
     clients['room=1'] = client;
-    client.onopen = evt => {
+    client.onopen = () => {
       expect(sse.connections.length).to.be.eq(1);
       done();
     };
@@ -47,7 +52,7 @@ describe('SseChannels', () => {
   it('other connect', done => {
     const client = new EventSource(`http://localhost:${PORT}/stream?room=2`);
     clients['room=2'] = client;
-    client.onopen = e => {
+    client.onopen = () => {
       expect(sse.connections.length).to.be.eq(2);
       done();
     };
@@ -65,7 +70,7 @@ describe('SseChannels', () => {
       clients['room=2'].onmessage = resolve;
     });
     sse.publish({ test: 'broadcast' });
-    const [r1, r2] = await Promise.all([p0, p1]);
+    const [r1] = await Promise.all([p0, p1]);
     expect(r1).to.have.any.keys('type', 'data');
   });
 
@@ -83,7 +88,7 @@ describe('SseChannels', () => {
 
   it('publish event to channel', () => {
     return new Promise((resolve, reject) => {
-      sse.publish(`room=2`, { test: 'test' });
+      sse.publish('room=2', { test: 'test' });
       clients['room=1'].onmessage = msg => reject(msg);
       clients['room=2'].onmessage = msg => resolve(msg);
     });
@@ -98,7 +103,7 @@ describe('SseChannels', () => {
 
   it('publish `test` type event to channel', () => {
     return new Promise((resolve, reject) => {
-      sse.publish(`room=2`, 'test', { test: 'test' });
+      sse.publish('room=2', 'test', { test: 'test' });
       clients['room=1'].onmessage = msg => reject(msg);
       clients['room=2'].addEventListener('test', msg => resolve(msg));
     });
@@ -106,7 +111,7 @@ describe('SseChannels', () => {
 
   it('publish eventObject', () => {
     return new Promise((resolve, reject) => {
-      sse.publish({ channel: `room=2`, event: 'test', data: { test: 'test' } });
+      sse.publish({ channel: 'room=2', event: 'test', data: { test: 'test' } });
       clients['room=1'].onmessage = msg => reject(msg);
       clients['room=2'].addEventListener('test', msg => resolve(msg));
     });

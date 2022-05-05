@@ -5,5 +5,4 @@ tmp/
 temp/
 node_modules/
 coverage/
-.eslintrc.js
 *.js
