@@ -1,0 +1,12 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "module": "commonjs",
+    "outDir": "./lib",
+    "target": "es2018",
+    "moduleResolution": "node",
+    "declaration": true
+  },
+  "include": ["./src/**/*"],
+  "exclude": ["./test/*.spec.ts"]
+}
