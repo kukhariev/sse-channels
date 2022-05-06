@@ -28,7 +28,7 @@
   "typings": "lib/index.d.ts",
   "scripts": {
     "clean": "rimraf lib",
-    "demo": "node example/",
+    "demo": "node examples/",
     "build": "npm run lint && npm run clean && npm run build-ts",
     "test": "mocha",
     "test:watch": "mocha --watch",
