@@ -4,6 +4,7 @@
 
 [![CI][ga-image]][ga-url]
 [![npm version][npm-image]][npm-url]
+[![commits since latest release][comm-image]][comm-url]
 
 ## Install
 
@@ -95,3 +96,5 @@ clients list filtered by `channel`
 [npm-url]: https://www.npmjs.com/package/@dropb/sse-channels
 [ga-image]: https://github.com/kukhariev/sse-channels/actions/workflows/test.yml/badge.svg?branch=master
 [ga-url]: https://github.com/kukhariev/sse-channels/actions/workflows/test.yml
+[comm-image]: https://img.shields.io/github/commits-since/kukhariev/sse-channels/latest
+[comm-url]: https://github.com/kukhariev/sse-channels/releases/latest
