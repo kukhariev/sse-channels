@@ -5,9 +5,7 @@
   "keywords": [
     "sse",
     "server-sent-events",
-    "eventsource",
-    "channels",
-    "typescript"
+    "eventsource"
   ],
   "author": {
     "name": "kukhariev",
@@ -19,7 +17,7 @@
   },
   "license": "MIT",
   "engines": {
-    "node": ">= 8.0.0"
+    "node": ">= 12.22.0"
   },
   "files": [
     "lib"
