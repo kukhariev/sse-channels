@@ -19,7 +19,7 @@ http
     let pathname = `.${parsedUrl.pathname}`;
 
     if (pathname === './stream') {
-      sse.subscribe(req, res, parsedUrl.query.ch);
+      sse.subscribe(req, res, parsedUrl.query.ch || '*').catch(console.error);
     } else if (pathname === './') {
       pathname = './index.html';
       const data = fs.readFileSync(path.resolve(__dirname, pathname));

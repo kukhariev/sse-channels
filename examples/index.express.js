@@ -20,7 +20,7 @@ sse.on('disconnected', client => {
   );
 });
 app.use('/stream', (req, res) => {
-  sse.subscribe(req, res, req.query.ch);
+  sse.subscribe(req, res, req.query.ch).catch(console.error);
 });
 setInterval(() => {
   sse.channels.forEach(ch => {
