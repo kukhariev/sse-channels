@@ -1,6 +1,6 @@
 {
   "name": "@dropb/sse-channels",
-  "version": "0.6.0",
+  "version": "0.6.1",
   "description": "Server-sent events middleware",
   "keywords": [
     "sse",
